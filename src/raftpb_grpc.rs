@@ -25,9 +25,9 @@ const METHOD_RAFT_APPEND_ENTRIES: ::grpcio::Method<super::raftpb::AppendEntriesR
     resp_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
 };
 
-const METHOD_RAFT_RQUEST_VOTE: ::grpcio::Method<super::raftpb::RquestVoteRequest, super::raftpb::RquestVoteResponse> = ::grpcio::Method {
+const METHOD_RAFT_REQUEST_VOTE: ::grpcio::Method<super::raftpb::RequestVoteRequest, super::raftpb::RequestVoteResponse> = ::grpcio::Method {
     ty: ::grpcio::MethodType::Unary,
-    name: "/raftpb.Raft/RquestVote",
+    name: "/raftpb.Raft/RequestVote",
     req_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
     resp_mar: ::grpcio::Marshaller { ser: ::grpcio::pb_ser, de: ::grpcio::pb_de },
 };
@@ -59,20 +59,20 @@ impl RaftClient {
         self.append_entries_async_opt(req, ::grpcio::CallOption::default())
     }
 
-    pub fn rquest_vote_opt(&self, req: &super::raftpb::RquestVoteRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<super::raftpb::RquestVoteResponse> {
-        self.client.unary_call(&METHOD_RAFT_RQUEST_VOTE, req, opt)
+    pub fn request_vote_opt(&self, req: &super::raftpb::RequestVoteRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<super::raftpb::RequestVoteResponse> {
+        self.client.unary_call(&METHOD_RAFT_REQUEST_VOTE, req, opt)
     }
 
-    pub fn rquest_vote(&self, req: &super::raftpb::RquestVoteRequest) -> ::grpcio::Result<super::raftpb::RquestVoteResponse> {
-        self.rquest_vote_opt(req, ::grpcio::CallOption::default())
+    pub fn request_vote(&self, req: &super::raftpb::RequestVoteRequest) -> ::grpcio::Result<super::raftpb::RequestVoteResponse> {
+        self.request_vote_opt(req, ::grpcio::CallOption::default())
     }
 
-    pub fn rquest_vote_async_opt(&self, req: &super::raftpb::RquestVoteRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::raftpb::RquestVoteResponse>> {
-        self.client.unary_call_async(&METHOD_RAFT_RQUEST_VOTE, req, opt)
+    pub fn request_vote_async_opt(&self, req: &super::raftpb::RequestVoteRequest, opt: ::grpcio::CallOption) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::raftpb::RequestVoteResponse>> {
+        self.client.unary_call_async(&METHOD_RAFT_REQUEST_VOTE, req, opt)
     }
 
-    pub fn rquest_vote_async(&self, req: &super::raftpb::RquestVoteRequest) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::raftpb::RquestVoteResponse>> {
-        self.rquest_vote_async_opt(req, ::grpcio::CallOption::default())
+    pub fn request_vote_async(&self, req: &super::raftpb::RequestVoteRequest) -> ::grpcio::Result<::grpcio::ClientUnaryReceiver<super::raftpb::RequestVoteResponse>> {
+        self.request_vote_async_opt(req, ::grpcio::CallOption::default())
     }
     pub fn spawn<F>(&self, f: F) where F: ::futures::Future<Item = (), Error = ()> + Send + 'static {
         self.client.spawn(f)
@@ -81,7 +81,7 @@ impl RaftClient {
 
 pub trait Raft {
     fn append_entries(&self, ctx: ::grpcio::RpcContext, req: super::raftpb::AppendEntriesRequest, sink: ::grpcio::UnarySink<super::raftpb::AppendEntriesResponse>);
-    fn rquest_vote(&self, ctx: ::grpcio::RpcContext, req: super::raftpb::RquestVoteRequest, sink: ::grpcio::UnarySink<super::raftpb::RquestVoteResponse>);
+    fn request_vote(&self, ctx: ::grpcio::RpcContext, req: super::raftpb::RequestVoteRequest, sink: ::grpcio::UnarySink<super::raftpb::RequestVoteResponse>);
 }
 
 pub fn create_raft<S: Raft + Send + Clone + 'static>(s: S) -> ::grpcio::Service {
@@ -91,8 +91,8 @@ pub fn create_raft<S: Raft + Send + Clone + 'static>(s: S) -> ::grpcio::Service 
         instance.append_entries(ctx, req, resp)
     });
     let instance = s.clone();
-    builder = builder.add_unary_handler(&METHOD_RAFT_RQUEST_VOTE, move |ctx, req, resp| {
-        instance.rquest_vote(ctx, req, resp)
+    builder = builder.add_unary_handler(&METHOD_RAFT_REQUEST_VOTE, move |ctx, req, resp| {
+        instance.request_vote(ctx, req, resp)
     });
     builder.build()
 }
